@@ -119,7 +119,7 @@ test result: ok. 48 passed; 0 failed
 
 这体现了我使用 AI 工具时的工作方式：让 AI 提高定位和实现效率，但最终以可复现的命令输出、测试结果和包内二进制检查作为依据。
 
-## 可以在简历中这样描述
+## 使用AI工具进行操作
 
 使用 AI 辅助完成 Electron Linux 打包兼容性修复：定位 `better-sqlite3` 原生模块因预编译二进制依赖 `GLIBC_2.38` 导致 Ubuntu 22.04 启动失败的问题；修改构建脚本强制 native addons 针对 Electron ABI 从源码编译，增加 C++20 编译器自动选择与 GLIBC 符号检查；重新生成 Debian 包并通过 Electron runtime、dpkg、cargo test 等验证，最终将运行时 GLIBC 需求降至 `GLIBC_2.34`。
 

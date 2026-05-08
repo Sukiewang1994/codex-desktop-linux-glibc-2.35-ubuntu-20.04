@@ -1,0 +1,60 @@
+diff --git a/install.sh b/install.sh
+index portfolio-summary..portfolio-summary 100755
+--- a/install.sh
++++ b/install.sh
+@@
++version_ge() {
++    [ "$(printf '%s\n%s\n' "$2" "$1" | sort -V | head -n 1)" = "$2" ]
++}
++
++host_glibc_version() {
++    ldd --version 2>/dev/null | head -n 1 | sed -n 's/.* \([0-9][0-9.]*\)$/\1/p'
++}
++
++verify_native_glibc_compat() {
++    local native_file="$1"
++    local glibc_version required_versions required_version
++
++    command -v strings >/dev/null 2>&1 || return 0
++    glibc_version="$(host_glibc_version || true)"
++    [ -n "$glibc_version" ] || return 0
++
++    required_versions="$(strings "$native_file" | grep -o 'GLIBC_[0-9.]*' | sed 's/^GLIBC_//' | sort -Vu || true)"
++    [ -n "$required_versions" ] || return 0
++
++    while IFS= read -r required_version; do
++        [ -n "$required_version" ] || continue
++        if ! version_ge "$glibc_version" "$required_version"; then
++            error "Native module $native_file requires GLIBC_$required_version, but this host provides GLIBC_$glibc_version"
++        fi
++    done <<< "$required_versions"
++}
++
++find_cxx20_compiler() {
++    local candidate
++
++    if [ -n "${CXX:-}" ] && command -v "$CXX" >/dev/null 2>&1 && cxx_supports_cpp20 "$CXX"; then
++        echo "$CXX"
++        return 0
++    fi
++
++    for candidate in g++-14 g++-13 g++-12 g++-11 clang++ g++ c++; do
++        if command -v "$candidate" >/dev/null 2>&1 && cxx_supports_cpp20 "$candidate"; then
++            echo "$candidate"
++            return 0
++        fi
++    done
++
++    return 1
++}
+@@
+-    npm install "better-sqlite3@$bs3_ver" "node-pty@$npty_ver" --ignore-scripts
++    npm install "better-sqlite3@$bs3_ver" "node-pty@$npty_ver" --ignore-scripts --build-from-source
+@@
+-    npx --yes @electron/rebuild -v "$ELECTRON_VERSION" --force
++    npm_config_build_from_source=true \
++        npx --yes @electron/rebuild -v "$ELECTRON_VERSION" --force --build-from-source
++
++    verify_native_glibc_compat "$build_dir/node_modules/better-sqlite3/build/Release/better_sqlite3.node"
++    verify_native_glibc_compat "$build_dir/node_modules/node-pty/build/Release/pty.node"
+

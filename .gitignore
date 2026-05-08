@@ -1,0 +1,15 @@
+# Generated application and package artifacts
+codex-app/
+dist/
+target/
+*.deb
+*.rpm
+*.pkg.tar.*
+*.dmg
+
+# Local tooling and caches
+.tools/
+.cache/
+node_modules/
+.DS_Store
+

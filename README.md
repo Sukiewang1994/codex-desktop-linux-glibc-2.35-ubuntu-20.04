@@ -128,6 +128,7 @@ test result: ok. 48 passed; 0 failed
 - [docs/summary-zh.md](docs/summary-zh.md)：中文项目总结，可用于简历和面试表达。
 - [docs/case-study.md](docs/case-study.md)：英文完整技术复盘。
 - [docs/ai-workflow.md](docs/ai-workflow.md)：AI 辅助开发流程说明。
+- [docs/release-artifact.md](docs/release-artifact.md)：Debian 包本地产物和 GitHub Release 发布说明。
 - [evidence/verification.md](evidence/verification.md)：验证命令和结果。
 - [patches/install-sh-key-changes.diff](patches/install-sh-key-changes.diff)：关键补丁摘要。
 
@@ -176,4 +177,3 @@ This repository intentionally does not include the official DMG, extracted appli
 - Shell scripting for reproducible installers
 - Rust CLI validation
 - AI-assisted software engineering workflow
-

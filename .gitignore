@@ -6,10 +6,10 @@ target/
 *.rpm
 *.pkg.tar.*
 *.dmg
+release-artifacts/
 
 # Local tooling and caches
 .tools/
 .cache/
 node_modules/
 .DS_Store
-
